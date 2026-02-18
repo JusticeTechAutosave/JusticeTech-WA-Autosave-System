@@ -1,0 +1,61 @@
+# QUICK FIX SUMMARY
+
+## What Was Wrong?
+
+1. **Bulk Save Bug**: The bot was checking WhatsApp's contact list instead of its own database to see if contacts were saved. This made it skip unsaved people who had WhatsApp names.
+
+2. **Autosave Reply Bug**: Weak checks allowed saved contacts to sometimes receive autosave prompts again.
+
+3. **Scan Cache Confusion**: The scan_cache contains ALL contacts (saved + unsaved), but the filtering wasn't working correctly.
+
+## What Changed?
+
+### bulksave.js (Line 184)
+**BEFORE:**
+```javascript
+if (ownerBook[digits]) continue;
+if (isAlreadySavedInWhatsAppContacts(store, jid)) continue;  // WRONG!
+```
+
+**AFTER:**
+```javascript
+if (ownerBook[digits]) continue;  // Only check our own database
+// Removed the wrong WhatsApp check
+```
+
+### autosave_google.js (Lines 1062-1183)
+**BEFORE:**
+```javascript
+if (existing?.google?.resourceName) {
+  // upgrade logic...
+  return;
+}
+// Start autosave flow
+```
+
+**AFTER:**
+```javascript
+if (existing) {
+  if (existing.google?.resourceName || existing.savedAt || existing.name) {
+    // upgrade logic...
+    return;  // NEVER continue to autosave for saved contacts
+  }
+}
+// Only start autosave flow if NOT already pending
+if (!pending) {
+  // Start autosave flow
+}
+```
+
+## Result
+
+✅ Bulk save now correctly identifies and saves ONLY unsaved contacts
+✅ Autosave NEVER replies to contacts that are already saved
+✅ Both features work correctly with scan_cache data
+
+## Files Modified
+
+- `plugins/bulksave.js` - Fixed contact filtering logic
+- `plugins/autosave_google.js` - Enhanced saved contact detection
+
+All other files remain unchanged.
