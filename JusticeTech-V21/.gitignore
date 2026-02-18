@@ -1,0 +1,66 @@
+# ─── Sensitive / User-Specific Files ────────────────────────────────────────
+# These are NEVER uploaded to GitHub — each user has their own.
+
+# WhatsApp session (your scan QR + credentials)
+sessions/
+auth_info_baileys/
+auth_info/
+*.session
+*.json.bak
+
+# Google OAuth tokens (user-linked Google accounts)
+data/google_tokens.json
+data/google_auth.json
+
+# OAuth client credentials (your private app secret)
+credentials/google_oauth_client.json
+
+# User database — subscriptions, bans, referrals etc.
+database/subscription.json
+database/subscription_pending.json
+database/ban.json
+database/referral.json
+database/autobackup_config.json
+database/owner_registry.json
+database/test_users.json
+database/scan_cache.json
+database/history_sync_flag.json
+
+# Prefix config (owners set their own)
+database/prefix.json
+
+# ─── Runtime & Logs ──────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# ─── OS / Editor ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.env
+.env.*
+.vscode/
+.idea/
+
+# ─── Temp / Build ─────────────────────────────────────────────────────────────
+tmp/
+temp/
+*.tmp
+*.zip
+*.tar.gz
+
+# ─── What IS committed to GitHub ──────────────────────────────────────────────
+# ✅ index.js
+# ✅ message.js
+# ✅ package.json
+# ✅ plugins/ (all plugin files)
+# ✅ library/ (all library files)
+# ✅ settings/config.js  ← NOTE: remove ownerNumber before pushing!
+# ✅ settings/bank.js
+# ✅ settings/plans.js
+# ✅ thumbnail/
+# ✅ docs/
+# ✅ version.json
+# ✅ database/tutorials.json  ← tutorial data is safe to share
